@@ -5,6 +5,8 @@ import cv2
 import os
 import argparse
 
+CASCADE_DIR_PATH = r"E:\Anaconda3\envs\python3.5\Library\etc\haarcascades"
+CASCADE_FILE_NAME = r"haarcascade_frontalface_alt.xml"
 id = 0
 # コマンドライン引数の定義
 parser = argparse.ArgumentParser()
@@ -24,4 +26,8 @@ elif args.type == "lfw_pos":
     SRC_DIR_PATH = "./data/lfw/"
     DST_DIR_PATH = "./data/faces/positive"
 
+# 顔画像検出器を初期化する
+cascade_path = os.path.join(CASCADE_DIR_PATH, CASCADE_FILE_NAME)
+cascade = cv2.CascadeClassifier(cascade_path)
 
+# ファイルセットを作る
