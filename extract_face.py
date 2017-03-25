@@ -64,3 +64,26 @@ for folder in folder_list:
 
         minsize = (int(resize_image_gray.shape[0] * 0.1),
                    int(resize_image_gray.shape[1] * 0.1))
+
+        try:
+            print("顔画像検出を行う.")
+            # 顔画像を検出する
+            facerect = cascade.detectMultiScale(
+                resize_image_gray, scaleFactor=1.1,
+                minNeighbors=1, minSize=minsize)
+            print("顔画像検出を終了する.")
+            if len(facerect) == 0 or len(facerect) > 1:
+                print("顔領域検出の結果が0もしくは2箇所以上発見されました.")
+                continue
+            for rect in facerect:
+                min_height = int(rect[0] / scale_height)
+                min_width = int(rect[1] / scale_width)
+                max_height = int(rect[2] / scale_height) + min_height
+                max_width = int(rect[3] / scale_width) + min_width
+
+                # 画像を保存する
+                cv2.imwrite(os.path.join(DST_DIR_PATH, "image_{}_{}.jpg".format(suffix, str(id))),
+                            image[min_height:max_height, min_width:max_width])
+                id += 1
+        except Exception as e:
+            print(e)
